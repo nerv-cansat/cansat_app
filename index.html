@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>CanSat receiver NERV 2022</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="error"></div>
+        <div class="container">
+            <div class="row justify-content-center">
+            <div class="col-5">
+                <label for="port">Select port</label>
+                <select id="port">     
+                </select> <button onclick="serial_init()">START</button> Data from: <span id="time">---</span>
+            </div>
+           
+                
+        </div>
+        <div class="row">
+           <div class="col text-center">
+                <h3>Temperature</h3>
+                <span class="measure" id="temp">---</span> °C
+           </div> 
+           <div class="col text-center">
+                <h3>Pressure</h3>
+                <span class="measure" id="pressure">---</span> Pa
+            </div> 
+            <div class="col text-center">
+                <h3>Voltage</h3>
+                <span class="measure" id="voltage">---</span> V
+            </div> 
+            <div class="col text-center">
+                <h3>RSSI</h3>
+                <span class="measure" id="rssi">---</span> dB
+            </div> 
+        </div>
+        <div class="row" style="margin-top: 2rem;">
+            <div class="col text-center">
+                 <h3>CO2</h3>
+                 <span class="measure" id="co2">---</span> ppm
+            </div> 
+            <div class="col text-center">
+                 <h3>PM2.5</h3>
+                 <span class="measure" id="pm25">---</span> μg/m³
+             </div> 
+             <div class="col text-center">
+                 <h3>Humidity</h3>
+                 <span class="measure" id="humidity">---</span> %
+             </div> 
+             <div class="col text-center">
+                 <h3>Gas</h3>
+                 <span class="measure" id="gas">---</span> %
+            </div> 
+        </div>
+
+            <div class="row" style="margin-top: 2rem">
+                <div class="col text-center axis">
+                     <h3>Accelelometer</h3>
+                     X: <span class="measure_3axis" id="acc_x">---</span> m/s² <br>
+                     Y: <span class="measure_3axis" id="acc_y">---</span> m/s² <br>
+                     Z: <span class="measure_3axis" id="acc_z">---</span> m/s² <br>
+                </div> 
+                <div class="col text-center axis">
+                     <h3>Gyroscope</h3>
+                     X: <span class="measure_3axis" id="gyro_x">---</span> °/s <br>
+                     Y: <span class="measure_3axis" id="gyro_y">---</span> °/s <br>
+                     Z: <span class="measure_3axis" id="gyro_z">---</span> °/s <br>
+                 </div> 
+                 <div class="col text-center axis" id="motor">
+                    <h3>Motor</h3>
+                    Distance: <span class="measure_3axis" id="distance">---</span> mm <br>
+                </div> 
+             </div>
+        </div>
+    </div>
+
+</body>
+
+<script src="./renderer.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</html>

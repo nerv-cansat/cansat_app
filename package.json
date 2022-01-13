@@ -1,0 +1,20 @@
+{
+    "name": "cansat_app",
+    "version": "1.0.0",
+    "description": "CanSat serial app",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "install": "electron-rebuild"
+    },
+    "author": "GitHub",
+    "devDependencies": {
+        "electron": "13.1.6",
+        "electron-packager": "^15.4.0",
+        "electron-rebuild": "^2.3.5"
+    },
+    "dependencies": {
+        "node-abi": "^3.5.0",
+        "serialport": "^9.2.0"
+    }
+}

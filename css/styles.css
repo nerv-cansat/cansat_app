@@ -1,0 +1,16 @@
+.measure {
+    font-size: 1.9em;
+}
+
+.axis {
+    font-size: 1.2em;
+}
+
+.measure_3axis{
+    font-size: 1.4em;
+}
+
+body {
+    background-color: #191a1c;
+    color: aliceblue;
+}

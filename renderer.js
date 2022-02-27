@@ -1,5 +1,12 @@
+// This file is required by the index.html file and will
+// be executed in the renderer process for that window.
+// All of the Node.js APIs are available in this process.
+
 const serialport = require('serialport')
 const Readline = require('@serialport/parser-readline')
+const { ipcRenderer } = require('electron');
+const fs = require('fs');
+
 
 async function listSerialPorts() {
   await serialport.list().then((ports, err) => {
@@ -36,6 +43,10 @@ function serial_init() {
     
     const parser = port.pipe(new Readline({ delimiter: '\n' }))
     parser.on('data', (input) =>{
+      fs.appendFile('data.json', input + '\n', function (err) {
+        if (err) throw err;
+      });
+
       recv = JSON.parse(input);
                  //vvvv miesiąc moze byc zerowy dlatego cofka o -1
      if(recv.time!=undefined){
@@ -46,20 +57,28 @@ function serial_init() {
       recv.v /=100;
       recv.h /=100;
       recv.g /=10;
-      recv.p25 /=100;
      }
 
-      if(recv.acc!=undefined){
-        recv.acc.x /=100;
-        recv.acc.y /=100;
-        recv.acc.z /=100;
+    if(recv.acc!=undefined){
+      recv.acc.x /=100;
+      recv.acc.y /=100;
+      recv.acc.z /=100;
     
-        recv.gyro.x /=100;
-        recv.gyro.y /=100;
-        recv.gyro.z /=100;
-      }
+      recv.gyro.x /=100;
+      recv.gyro.y /=100;
+      recv.gyro.z /=100;
 
-  
+      recv.rtc /=100;
+    }
+
+    if(recv.pm!=undefined){
+      recv.t /=100;
+      recv.p /=100;
+      recv.pm["1"] /=100;
+      recv.pm["25"] /=100;
+      recv.pm["40"] /=100;
+      recv.pm["10"] /=100;      
+    }
       console.log(recv);
       updateGauges();
     });
@@ -94,13 +113,20 @@ function updateGauges(){
     document.getElementById("humidity").innerText = recv.h;
     document.getElementById("distance").innerText = recv.d;
     document.getElementById("gas").innerText = recv.g;
-    document.getElementById("pm25").innerText = recv.p25;
     if(recv.d<1000){
       document.getElementById("motor").style = "background-color: #612115";
     }
     else{
       document.getElementById("motor").style = "background-color: #191a1c";
     }
+    ipcRenderer.send('temp', recv.t);
+    ipcRenderer.send('pressure', recv.p);
+    ipcRenderer.send('voltage', recv.v);
+    ipcRenderer.send('rssi', recv.rssi);
+    ipcRenderer.send('co2', recv.co2);
+    ipcRenderer.send('humidity', recv.h);
+    ipcRenderer.send('gas', recv.g);
+
   }
 
   if(recv.acc!=undefined){
@@ -111,9 +137,24 @@ function updateGauges(){
     document.getElementById("gyro_x").innerText = recv.gyro.x;
     document.getElementById("gyro_y").innerText = recv.gyro.y;
     document.getElementById("gyro_z").innerText = recv.gyro.z;
+
+    document.getElementById("rtc").innerText = recv.rtc;
+
+    document.getElementById("rssi").innerText = recv.rssi;
+
   }
   
+  if(recv.pm!=undefined){
+    document.getElementById("temp").innerText = recv.t;
+    document.getElementById("pressure").innerText = recv.p;
+
+    document.getElementById("pm10").innerText = recv.pm["10"];
+    document.getElementById("pm40").innerText = recv.pm["40"];
+    document.getElementById("pm25").innerText = recv.pm["25"];
+    document.getElementById("pm1").innerText = recv.pm["1"];
+
+    document.getElementById("rssi").innerText = recv.rssi;
+
+    ipcRenderer.send('pm25', recv.pm["10"]);
+  }
 }
-
-
-

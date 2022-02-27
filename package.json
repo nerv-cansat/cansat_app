@@ -1,11 +1,15 @@
 {
     "name": "cansat_app",
     "version": "1.0.0",
-    "description": "CanSat serial app",
+    "description": "apka na serial z cansata",
     "main": "main.js",
     "scripts": {
         "start": "electron .",
         "install": "electron-rebuild"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:sztvka/cansat_app.git"
     },
     "author": "GitHub",
     "devDependencies": {
